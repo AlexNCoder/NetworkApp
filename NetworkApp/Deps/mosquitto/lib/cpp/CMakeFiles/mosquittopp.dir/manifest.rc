@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+2 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "E:/Projects/C++/Test4Job/2024/9/LaserSystems/mosquitto-2.0.18/out/build/x64-Debug/lib/cpp/CMakeFiles/mosquittopp.dir/embed.manifest"
