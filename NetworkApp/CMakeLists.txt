@@ -1,4 +1,5 @@
-﻿if (NOT WIN32 AND NOT UNIX)
+﻿# Подключение mosquitto
+if (NOT WIN32 AND NOT UNIX)
     message (FATAL_ERROR "Неизвестная система")
 endif()
 
@@ -17,9 +18,11 @@ elseif (UNIX AND ${CMAKE_SYSTEM} MATCHES "Linux")
     IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/linux/lib/libmosquitto.so)
 endif()
 
+# Создание приложения
 add_executable (NetworkApp "NetworkApp.cpp" "NetworkApp.h")
 target_link_libraries(NetworkApp PRIVATE MosquittoLib)
 
+# Копирование dll
 if (WIN32)
     file(COPY
         ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/windows/lib/mosquitto.dll
@@ -30,3 +33,5 @@ endif()
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET NetworkApp PROPERTY CXX_STANDARD 20)
 endif()
+
+# TODO: Добавить тесты
