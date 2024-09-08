@@ -3,22 +3,28 @@
 #
 
 # Добавьте источник в исполняемый файл этого проекта.
-#add_library(MosquittoLib STATIC IMPORTED)
-#set_property(TARGET MosquittoLib PROPERTY
-#IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.lib)
-
-add_library(MosquittoppLib STATIC IMPORTED)
-set_property(TARGET MosquittoppLib PROPERTY
-IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/cpp/mosquittopp.lib)
-
-add_library(MosquittoLib STATIC IMPORTED)
-set_property(TARGET MosquittoLib PROPERTY
-IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.lib)
-
-
 include_directories(${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/include)
+
+add_library(MosquittoLib SHARED IMPORTED)
+if (WIN32)
+    set_property(TARGET MosquittoLib PROPERTY
+    IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.dll)
+#elseif (LINUX)
+    #set_property(TARGET MosquittoLib PROPERTY
+    #IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.so)
+endif()
+
+set_property(TARGET MosquittoLib PROPERTY
+IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.lib)
+
 add_executable (NetworkApp "NetworkApp.cpp" "NetworkApp.h")
-target_link_libraries(NetworkApp PRIVATE MosquittoLib MosquittoppLib)
+target_link_libraries(NetworkApp PRIVATE MosquittoLib)
+
+if (WIN32)
+    file(COPY
+        ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/lib/mosquitto.dll
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+endif()
 
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
