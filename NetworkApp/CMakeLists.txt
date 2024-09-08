@@ -21,8 +21,6 @@ elseif (UNIX AND ${CMAKE_SYSTEM} MATCHES "Linux")
 
     set_property(TARGET MosquittoLib PROPERTY
     IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/linux/lib/libmosquitto.so)
-#    set_property(TARGET MosquittoLib PROPERTY
-#    IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/linux/lib/mosquitto.lib)
 endif()
 
 add_executable (NetworkApp "NetworkApp.cpp" "NetworkApp.h")
@@ -30,7 +28,7 @@ target_link_libraries(NetworkApp PRIVATE MosquittoLib)
 
 if (WIN32)
     file(COPY
-        ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/lib/mosquitto.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/windows/lib/mosquitto.dll
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
 endif()
 
