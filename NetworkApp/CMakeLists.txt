@@ -3,19 +3,27 @@
 #
 
 # Добавьте источник в исполняемый файл этого проекта.
-include_directories(${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/include)
+if (NOT WIN32 AND NOT UNIX)
+    message (FATAL_ERROR "Неизвестная система")
+endif()
 
 add_library(MosquittoLib SHARED IMPORTED)
 if (WIN32)
-    set_property(TARGET MosquittoLib PROPERTY
-    IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.dll)
-#elseif (LINUX)
-    #set_property(TARGET MosquittoLib PROPERTY
-    #IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.so)
-endif()
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/windows/include)
 
-set_property(TARGET MosquittoLib PROPERTY
-IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/lib/mosquitto.lib)
+    set_property(TARGET MosquittoLib PROPERTY
+    IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/windows/lib/mosquitto.dll)
+    set_property(TARGET MosquittoLib PROPERTY
+    IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/windows/lib/mosquitto.lib)
+elseif (UNIX AND ${CMAKE_SYSTEM} MATCHES "Linux")
+    message(${CMAKE_CURRENT_SOURCE_DIR})
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/linux/include)
+
+    set_property(TARGET MosquittoLib PROPERTY
+    IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Deps/mosquitto/linux/lib/libmosquitto.so)
+#    set_property(TARGET MosquittoLib PROPERTY
+#    IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/NetworkApp/Deps/mosquitto/linux/lib/mosquitto.lib)
+endif()
 
 add_executable (NetworkApp "NetworkApp.cpp" "NetworkApp.h")
 target_link_libraries(NetworkApp PRIVATE MosquittoLib)

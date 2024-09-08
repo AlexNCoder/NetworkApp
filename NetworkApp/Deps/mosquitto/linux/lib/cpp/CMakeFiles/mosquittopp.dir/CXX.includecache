@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/alexneurocoder/Projects/C++/Test4Job/2024/9/LaserSystems/mosquitto-2.0.18/include/mosquitto.h
+stdbool.h
+-
+stddef.h
+-
+stdint.h
+-
+
+/home/alexneurocoder/Projects/C++/Test4Job/2024/9/LaserSystems/mosquitto-2.0.18/lib/cpp/mosquittopp.cpp
+cstdlib
+-
+mosquitto.h
+-
+mosquittopp.h
+-
+
+/home/alexneurocoder/Projects/C++/Test4Job/2024/9/LaserSystems/mosquitto-2.0.18/lib/cpp/mosquittopp.h
+cstdlib
+-
+mosquitto.h
+-
+time.h
+-
+
