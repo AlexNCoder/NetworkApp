@@ -1,4 +1,4 @@
-﻿#include "NetworkAppClient.h"
+﻿#include "NetworkAppPseudoServer.h"
 #include <mosquitto.h>
 
 using namespace std;
@@ -17,7 +17,7 @@ int main()
 	
 	int* mid = new int;
 	const char* topic = "testTopicANC\0";
-	std::string payloadS = "fromClient";
+	std::string payloadS = "fromPseudoServer";
 	int payloadlen = payloadS.length();
 	const void* payload = payloadS.c_str();
 	int qos = 0;
