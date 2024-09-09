@@ -1,5 +1,7 @@
 ﻿#include "NetworkAppClient.h"
 #include <mosquitto.h>
+#include "Sender.h"
+#include "Parser.h"
 
 using namespace std;
 
@@ -25,6 +27,9 @@ int main()
 	auto res = mosquitto_publish(mosq, mid, topic, payloadlen, payload, qos, retain);
 	cout << "Hello moscuitto" << endl;
 	mosquitto_destroy(mosq);
+
+	Sender().send();
+	Parser().parse();
 
 	return 0;
 }

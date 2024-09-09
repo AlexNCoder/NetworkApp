@@ -1,5 +1,5 @@
 ﻿# Создание приложения
-add_executable (NetworkAppClient "NetworkAppClient.cpp" "NetworkAppClient.h")
+add_executable (NetworkAppClient "NetworkAppClient.cpp" "NetworkAppClient.h" "Sender.h" "Sender.cpp" "Parser.h" "Parser.cpp")
 target_link_libraries(NetworkAppClient PUBLIC MosquittoLib)
 
 # Копирование dll

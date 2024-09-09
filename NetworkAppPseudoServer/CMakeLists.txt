@@ -1,5 +1,5 @@
 ﻿# Создание приложения
-add_executable (NetworkAppPseudoServer "NetworkAppPseudoServer.cpp" "NetworkAppPseudoServer.h")
+add_executable (NetworkAppPseudoServer "NetworkAppPseudoServer.cpp" "NetworkAppPseudoServer.h" "Receiver.h" "Receiver.cpp")
 target_link_libraries(NetworkAppPseudoServer PUBLIC MosquittoLib)
 
 # Копирование dll
