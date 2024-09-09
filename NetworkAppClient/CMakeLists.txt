@@ -1,8 +1,6 @@
-﻿
-
-# Создание приложения
-add_executable (NetworkApp "NetworkApp.cpp" "NetworkApp.h")
-target_link_libraries(NetworkApp PUBLIC MosquittoLib)
+﻿# Создание приложения
+add_executable (NetworkAppClient "NetworkAppClient.cpp" "NetworkAppClient.h")
+target_link_libraries(NetworkAppClient PUBLIC MosquittoLib)
 
 # Копирование dll
 if (WIN32)
@@ -12,7 +10,7 @@ if (WIN32)
 endif()
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET NetworkApp PROPERTY CXX_STANDARD 20)
+  set_property(TARGET NetworkAppClient PROPERTY CXX_STANDARD 20)
 endif()
 
 # TODO: Добавить тесты

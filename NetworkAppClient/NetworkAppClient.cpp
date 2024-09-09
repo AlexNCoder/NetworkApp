@@ -1,7 +1,7 @@
 ﻿// NetworkApp.cpp: определяет точку входа для приложения.
 //
 
-#include "NetworkApp.h"
+#include "NetworkAppClient.h"
 //#include <cpp/mosquittopp.h>
 #include <mosquitto.h>
 
