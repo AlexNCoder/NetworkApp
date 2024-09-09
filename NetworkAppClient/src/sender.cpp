@@ -1,4 +1,4 @@
-#include "Sender.h"
+#include "sender.h"
 #include <iostream>
 
 void Sender::send()

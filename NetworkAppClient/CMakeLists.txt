@@ -1,5 +1,9 @@
-﻿# Создание приложения
-add_executable (NetworkAppClient "NetworkAppClient.cpp" "NetworkAppClient.h" "Sender.h" "Sender.cpp" "Parser.h" "Parser.cpp")
+﻿project(NetworkAppClient)
+
+# Создание приложения
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
+
+add_executable (NetworkAppClient ${SOURCES})
 target_link_libraries(NetworkAppClient PUBLIC MosquittoLib)
 
 # Копирование dll

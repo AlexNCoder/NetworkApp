@@ -1,4 +1,4 @@
-#include "Receiver.h"
+#include "receiver.h"
 #include <iostream>
 
 void Receiver::print()

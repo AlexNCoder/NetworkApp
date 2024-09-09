@@ -1,13 +1,11 @@
-﻿#include "NetworkAppPseudoServer.h"
+#include "src/networkapppseudoserver.h"
 #include <mosquitto.h>
 #include <iostream>
-#include "Receiver.h"
-
-using namespace std;
+#include "src/receiver.h"
 
 int main()
 {
-	cout << "Hello CMake1." << endl;
+	std::cout << "Hello CMake1." << std::endl;
 	const char* id = new char(1);
 	void* obj = nullptr;
 	//mosqpp::mosquittopp();
@@ -16,7 +14,7 @@ int main()
 	std::string hostS = "localhost";
 	char* host = const_cast<char*>(hostS.c_str());
 	auto connRes = mosquitto_connect(mosq, host, 1883, 0);
-	
+
 	int* mid = new int;
 	const char* topic = "testTopicANC\0";
 	std::string payloadS = "fromPseudoServer";
@@ -25,7 +23,7 @@ int main()
 	int qos = 0;
 	bool retain = true;
 	auto res = mosquitto_publish(mosq, mid, topic, payloadlen, payload, qos, retain);
-	cout << "Hello moscuitto" << endl;
+	std::cout << "Hello moscuitto" << std::endl;
 	mosquitto_destroy(mosq);
 
 	Receiver().print();

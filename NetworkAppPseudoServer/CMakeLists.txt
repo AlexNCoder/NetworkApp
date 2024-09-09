@@ -1,5 +1,9 @@
-﻿# Создание приложения
-add_executable (NetworkAppPseudoServer "NetworkAppPseudoServer.cpp" "NetworkAppPseudoServer.h" "Receiver.h" "Receiver.cpp")
+﻿project(NetworkAppPseudoServer)
+
+# Создание приложения
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
+
+add_executable (NetworkAppPseudoServer ${SOURCES})
 target_link_libraries(NetworkAppPseudoServer PUBLIC MosquittoLib)
 
 # Копирование dll

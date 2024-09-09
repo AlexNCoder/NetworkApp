@@ -1,13 +1,12 @@
-﻿#include "NetworkAppClient.h"
+#include "src/NetworkAppClient.h"
 #include <mosquitto.h>
-#include "Sender.h"
-#include "Parser.h"
-
-using namespace std;
+#include "src/sender.h"
+#include "src/parser.h"
+#include <iostream>
 
 int main()
 {
-	cout << "Hello CMake1." << endl;
+	std::cout << "Hello CMake1." << std::endl;
 	const char* id = new char(1);
 	void* obj = nullptr;
 	//mosqpp::mosquittopp();
@@ -16,7 +15,7 @@ int main()
 	std::string hostS = "localhost";
 	char* host = const_cast<char*>(hostS.c_str());
 	auto connRes = mosquitto_connect(mosq, host, 1883, 0);
-	
+
 	int* mid = new int;
 	const char* topic = "testTopicANC\0";
 	std::string payloadS = "fromClient";
@@ -25,7 +24,7 @@ int main()
 	int qos = 0;
 	bool retain = true;
 	auto res = mosquitto_publish(mosq, mid, topic, payloadlen, payload, qos, retain);
-	cout << "Hello moscuitto" << endl;
+	std::cout << "Hello moscuitto" << std::endl;
 	mosquitto_destroy(mosq);
 
 	Sender().send();
