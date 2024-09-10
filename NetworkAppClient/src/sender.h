@@ -1,8 +1,8 @@
 #pragma once
-
+#include <string>
 
 class Sender
 {
 public:
-	void send();
+	void send(std::string s);
 };

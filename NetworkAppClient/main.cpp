@@ -1,34 +1,23 @@
 #include "src/NetworkAppClient.h"
-#include <mosquitto.h>
+
 #include "src/sender.h"
 #include "src/parser.h"
-#include <iostream>
 
 int main()
 {
-	std::cout << "Hello CMake1." << std::endl;
-	const char* id = new char(1);
-	void* obj = nullptr;
-	//mosqpp::mosquittopp();
-	mosquitto_lib_init();
-	auto mosq = mosquitto_new(NULL, true, obj);
-	std::string hostS = "localhost";
-	char* host = const_cast<char*>(hostS.c_str());
-	auto connRes = mosquitto_connect(mosq, host, 1883, 0);
+	// Парсинг командной строки (неограниченная длина, только ASCII)
+	// Пример: 
+	//	17 water, 26.33 shugar, 13,76 milk and 1 egg
+	std::string s = "13.76 26.33 1 17";
 
-	int* mid = new int;
-	const char* topic = "testTopicANC\0";
-	std::string payloadS = "fromClient";
-	int payloadlen = payloadS.length();
-	const void* payload = payloadS.c_str();
-	int qos = 0;
-	bool retain = true;
-	auto res = mosquitto_publish(mosq, mid, topic, payloadlen, payload, qos, retain);
-	std::cout << "Hello moscuitto" << std::endl;
-	mosquitto_destroy(mosq);
+	// Отправка сообщения
+	Sender().send(Parser().parse(s));
+	// Получение ответа от сервера
 
-	Sender().send();
-	Parser().parse();
+	// Отображение результата
+	// Пример:
+	//	1 13.76 17 26.33
+	//	58.09
 
 	return 0;
 }

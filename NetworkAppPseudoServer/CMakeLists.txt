@@ -1,8 +1,9 @@
 ﻿project(NetworkAppPseudoServer)
 
-# Создание приложения
+# Сбор исходников
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
 
+# Создание приложения
 add_executable (NetworkAppPseudoServer ${SOURCES})
 target_link_libraries(NetworkAppPseudoServer PUBLIC MosquittoLib)
 

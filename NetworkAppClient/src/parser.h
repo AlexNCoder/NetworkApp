@@ -1,7 +1,8 @@
 #pragma once
+#include <string>
 
 class Parser
 {
 public:
-	void parse();
+	std::string parse(std::string s);
 };
