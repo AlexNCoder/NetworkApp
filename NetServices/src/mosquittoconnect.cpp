@@ -1,5 +1,6 @@
 #include "mosquittoconnect.h"
 #include <mosquitto.h>
+#include <iostream>
 
 MosquittoConnect::MosquittoConnect(std::string hostS, int port, int qos)
 	:m_qos(qos)
@@ -21,8 +22,6 @@ void MosquittoConnect::initConnection(std::string hostS, int port, int qos)
 	m_mosq = mosquitto_new(NULL, true, obj);
 	char* host = const_cast<char*>(hostS.c_str());
 	auto connRes = mosquitto_connect(m_mosq, host, 1883, 0);
-
-	mosquitto_message_callback_set(m_mosq, message_callback);
 }
 
 void MosquittoConnect::pub(std::string message, std::string topic)
@@ -40,10 +39,13 @@ void MosquittoConnect::pub(std::string message, std::string topic)
 
 void MosquittoConnect::sub(std::string topic)
 {
+	mosquitto_message_callback_set(m_mosq, message_callback);
 	mosquitto_subscribe(m_mosq, m_mid, topic.c_str(), m_qos);
+
+	while (1);
 }
 
-void message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message)
+void MosquittoConnect::message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message)
 {
-
+	std::cout << message << std::endl;
 }

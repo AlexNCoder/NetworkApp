@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-void message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message);
+
 class MosquittoConnect
 {
 public:
@@ -9,10 +9,10 @@ public:
 
 	void pub(std::string message, std::string topic = "testTopicANC\0");
 	void sub(std::string topic = "testTopicANC\0");
+	static void message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message);
 
 private:
 	void initConnection(std::string hostS, int port, int qos);
-	
 
 	struct mosquitto* m_mosq = nullptr;
 	int m_qos = 0;
