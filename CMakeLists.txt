@@ -12,5 +12,6 @@ project ("NetworkApps")
 include(cmake/libdeps.cmake)
 
 # Включите подпроекты.
+add_subdirectory ("NetServices")
 add_subdirectory ("NetworkAppClient")
 add_subdirectory ("NetworkAppPseudoServer")

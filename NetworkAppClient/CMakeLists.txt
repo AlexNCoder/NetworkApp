@@ -4,18 +4,11 @@
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
 
 # Создание приложения
-add_executable (NetworkAppClient ${SOURCES})
-target_link_libraries(NetworkAppClient PUBLIC MosquittoLib)
-
-# Копирование dll
-if (WIN32)
-    file(COPY
-        ${CMAKE_HOME_DIRECTORY}/Deps/mosquitto/windows/lib/mosquitto.dll
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
-endif()
+add_executable (${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} PRIVATE MosquittoConnect)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET NetworkAppClient PROPERTY CXX_STANDARD 20)
+  set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 endif()
 
 # TODO: Добавить тесты
