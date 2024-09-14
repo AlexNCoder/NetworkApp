@@ -1,6 +1,6 @@
 #include "src/NetworkAppClient.h"
 
-#include "src/sender.h"
+
 #include "src/parser.h"
 
 int main()
@@ -11,7 +11,7 @@ int main()
 	std::string s = "13.76 26.33 1 17";
 
 	// Отправка сообщения
-	Sender().send(Parser().parse(s));
+	
 	// Получение ответа от сервера
 
 	// Отображение результата

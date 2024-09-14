@@ -10,7 +10,7 @@ add_library (${PROJECT_NAME} STATIC ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 
 # Подключение mosquitto
-target_link_libraries(${PROJECT_NAME} PRIVATE MosquittoLib)
+target_link_libraries(${PROJECT_NAME} PUBLIC MosquittoLib)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)

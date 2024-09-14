@@ -8,8 +8,9 @@ int main()
 	try
 	{
 		// Прием сообщения
-		auto mosqInstance = MosquittoConnect();
-		mosqInstance.sub();
+		//auto mosqInstance = MosquittoConnect();
+		//mosqInstance.sub();
+		Server().run();
 		// Выделение только чисел
 
 		// Сортировка чисел по возрастанию

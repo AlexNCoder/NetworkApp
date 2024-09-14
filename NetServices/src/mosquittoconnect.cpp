@@ -1,6 +1,7 @@
 #include "mosquittoconnect.h"
-#include <mosquitto.h>
+
 #include <iostream>
+
 
 MosquittoConnect::MosquittoConnect(std::string hostS, int port, int qos)
 	:m_qos(qos)
@@ -24,7 +25,19 @@ void MosquittoConnect::initConnection(std::string hostS, int port, int qos)
 	auto connRes = mosquitto_connect(m_mosq, host, 1883, 0);
 }
 
-void MosquittoConnect::pub(std::string message, std::string topic)
+void MosquittoConnect::connect_callback(struct mosquitto* mosq, void* obj, int result)
+{
+	std::cout << "connected" << std::endl;
+	auto res = mosquitto_subscribe(mosq, NULL, "testTopicANC\0", 0);
+	std::cout << "subs_result:	" << res << std::endl;
+}
+
+void MosquittoConnect::message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
+{
+	std::cout << "From MosquittoConnect:	" << (char*)message->payload << std::endl;
+}
+
+void MosquittoConnect::pub(struct mosquitto* mosq, std::string message, int qos, std::string topic)
 {
 	// Подготовка сообщения
 	int* mid = new int;
@@ -34,29 +47,15 @@ void MosquittoConnect::pub(std::string message, std::string topic)
 	bool retain = true;
 
 	// Отправка сообщения
-	auto res = mosquitto_publish(m_mosq, mid, topicS, payloadlen, payload, m_qos, retain);
+	auto res = mosquitto_publish(mosq, mid, topicS, payloadlen, payload, qos, retain);
 }
 
-void MosquittoConnect::sub(std::string topic)
+void MosquittoConnect::sub(
+	void (*message_callback)(mosquitto* mosq, void* userdata,
+		const mosquitto_message* message),
+	std::string topic)
 {
 	mosquitto_connect_callback_set(m_mosq, connect_callback);
 	mosquitto_message_callback_set(m_mosq, message_callback);
 	auto res = mosquitto_subscribe(m_mosq, NULL, topic.c_str(), 0);
-
-	while (1)
-	{
-		mosquitto_loop(m_mosq, 100, 1);
-	}
-}
-
-void MosquittoConnect::message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message)
-{
-	std::cout << (char *)message->payload << std::endl;
-}
-
-void MosquittoConnect::connect_callback(struct mosquitto* mosq, void* obj, int result)
-{
-	std::cout << "connected" << std::endl;
-	auto res = mosquitto_subscribe(mosq, NULL, "testTopicANC\0", 0);
-	std::cout << "subs_result:	" << res << std::endl;
 }
