@@ -39,13 +39,24 @@ void MosquittoConnect::pub(std::string message, std::string topic)
 
 void MosquittoConnect::sub(std::string topic)
 {
+	mosquitto_connect_callback_set(m_mosq, connect_callback);
 	mosquitto_message_callback_set(m_mosq, message_callback);
-	mosquitto_subscribe(m_mosq, m_mid, topic.c_str(), m_qos);
+	auto res = mosquitto_subscribe(m_mosq, NULL, topic.c_str(), 0);
 
-	while (1);
+	while (1)
+	{
+		mosquitto_loop(m_mosq, 100, 1);
+	}
 }
 
 void MosquittoConnect::message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message)
 {
-	std::cout << message << std::endl;
+	std::cout << (char *)message->payload << std::endl;
+}
+
+void MosquittoConnect::connect_callback(struct mosquitto* mosq, void* obj, int result)
+{
+	std::cout << "connected" << std::endl;
+	auto res = mosquitto_subscribe(mosq, NULL, "testTopicANC\0", 0);
+	std::cout << "subs_result:	" << res << std::endl;
 }

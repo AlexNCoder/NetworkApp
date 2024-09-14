@@ -9,6 +9,8 @@ public:
 
 	void pub(std::string message, std::string topic = "testTopicANC\0");
 	void sub(std::string topic = "testTopicANC\0");
+	
+	static void connect_callback(struct mosquitto* mosq, void* obj, int result);
 	static void message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message);
 
 private:

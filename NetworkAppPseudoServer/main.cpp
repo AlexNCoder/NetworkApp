@@ -5,22 +5,28 @@
 
 int main()
 {
-	// Прием сообщения
-	auto mosqInstance = MosquittoConnect();
-	mosqInstance.sub();
-	// Выделение только чисел
+	try
+	{
+		// Прием сообщения
+		auto mosqInstance = MosquittoConnect();
+		mosqInstance.sub();
+		// Выделение только чисел
 
-	// Сортировка чисел по возрастанию
+		// Сортировка чисел по возрастанию
 
-	// Вычисление суммы
+		// Вычисление суммы
 
-	// Формирование итоговой строки
+		// Формирование итоговой строки
 
-	// Отправка сообщения со строкой клиенту
-	//mosquitto_destroy(mosq);
+		// Отправка сообщения со строкой клиенту
+		//mosquitto_destroy(mosq);
 
-	Receiver().print();
-	
+		Receiver().print();
+	}
+	catch (const std::exception&)
+	{
+		std::cout << "Выход" << std::endl;
+	}
 
 	return 0;
 }
