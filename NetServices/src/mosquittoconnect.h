@@ -16,7 +16,7 @@ public:
 	MosquittoConnect(std::string hostS = "localhost", int port = 1883, int qos = 0);
 	~MosquittoConnect();
 
-	static void pub(struct mosquitto* mosq, std::string message, int qos = 0, std::string topic = "testTopicANC\0");
+	static void pub(struct mosquitto* mosq, std::string message, std::string topic = "testTopicANC\0", int qos = 0);
 	void sub(void (*message_callback)(mosquitto* mosq, void* userdata, const mosquitto_message* message) = message_callback, std::string topic = "testTopicANC\0");
 
 	virtual void run() = 0;

@@ -34,10 +34,12 @@ void MosquittoConnect::connect_callback(struct mosquitto* mosq, void* obj, int r
 
 void MosquittoConnect::message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
 {
-	std::cout << "From MosquittoConnect:	" << (char*)message->payload << std::endl;
+	std::cout << "From MosquittoConnect:\n" 
+		<< "topic:	" << message->topic << "\n"
+		<< "message:	" << (char*)message->payload << std::endl;
 }
 
-void MosquittoConnect::pub(struct mosquitto* mosq, std::string message, int qos, std::string topic)
+void MosquittoConnect::pub(struct mosquitto* mosq, std::string message, std::string topic, int qos)
 {
 	// Подготовка сообщения
 	int* mid = new int;
