@@ -3,26 +3,48 @@
 #include "mosquittoconnect.h"
 #include <cstring>
 
-void Server::message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
+class Parser
+{
+public:
+	static std::string f(std::string str)
+	{
+		auto pos = str.rfind("/in/");
+		if (pos == str.npos)
+		{
+			return "";
+		}
+		str.replace(pos, str.size() - 1, "/out/");
+
+		return str;
+		
+		
+			/*
+			char* pch = strtok(str, "/");
+
+		while (pch != NULL)
+		{
+			std::cout << pch << "n";
+			pch = strtok(NULL, "/");
+		}*/
+	}
+};
+
+void Server::server_message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
 {
 	std::cout << "From Server:	" << (char*)message->payload << std::endl;
-	auto len = message->payloadlen + 5;
-	char* topic = new char(len);
-	
-	const char* tag = "/out/";
-	
-	strcpy(topic, message->topic);
-	strcat(topic, tag);
+	auto topic = Parser::f(message->topic);
 	std::cout << topic << std::endl;
-	pub(mosq, "newanswer", topic);
-	//pub(mosq, "answer", "testTopicANC/out/");
+	
 	/// ...обработка
-	//m_mosquittoConnect.pub("from server", "testTopicANC\0");// mosquitto_publish(mosq, NULL, mosq->topic, payloadlen, payload, m_qos, retain);
+	auto serveranswer = "serveranswer";
+	/// ...обработка
+	
+	pub(mosq, serveranswer, topic);
 }
 
 void Server::run()
 {
-	sub(message_callback);
+	sub(server_message_callback, "/testTopicANC/in/");
 	//sub();
 	while (1)
 	{

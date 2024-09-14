@@ -22,14 +22,7 @@ void MosquittoConnect::initConnection(std::string hostS, int port, int qos)
 	mosquitto_lib_init();
 	m_mosq = mosquitto_new(NULL, true, obj);
 	char* host = const_cast<char*>(hostS.c_str());
-	auto connRes = mosquitto_connect(m_mosq, host, 1883, 0);
-}
-
-void MosquittoConnect::connect_callback(struct mosquitto* mosq, void* obj, int result)
-{
-	std::cout << "connected" << std::endl;
-	auto res = mosquitto_subscribe(mosq, NULL, "testTopicANC\0", 0);
-	std::cout << "subs_result:	" << res << std::endl;
+	auto connRes = mosquitto_connect(m_mosq, host, port, 0);
 }
 
 void MosquittoConnect::message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
@@ -57,7 +50,7 @@ void MosquittoConnect::sub(
 		const mosquitto_message* message),
 	std::string topic)
 {
-	mosquitto_connect_callback_set(m_mosq, connect_callback);
+	//mosquitto_connect_callback_set(m_mosq, connect_callback);
 	mosquitto_message_callback_set(m_mosq, message_callback);
 	auto res = mosquitto_subscribe(m_mosq, NULL, topic.c_str(), 0);
 }
