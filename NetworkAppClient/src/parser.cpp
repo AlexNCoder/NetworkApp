@@ -1,9 +1,14 @@
 #include "parser.h"
 #include <iostream>
+#include <algorithm>
 
-std::string Parser::parse(std::string s)
+bool Parser::isAllASCII(std::string s)
 {
-	std::cout << "from Parser" << std::endl;
-
-	return s;
+	return std::all_of(
+		s.begin(),
+		s.end(),
+		[](const unsigned char& c)
+		{
+			return c <= 127;
+		});
 }

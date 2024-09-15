@@ -2,6 +2,7 @@
 #include <iostream>
 #include <mosquitto.h>
 #include <string>
+#include "parser.h"
 
 bool Client::subscribe = true;
 
@@ -21,22 +22,42 @@ void Client::run()
 	//std::string s = "13.76 26.33 1 17";
 
 	std::string s;
+	std::string receieveTopic = "/testTopicANC/out/";
 
 	// Отправка сообщения
 	while (1)
 	{
-		std::string receieveTopic = "/testTopicANC/out/";
 		unSub(receieveTopic);
-
+		std::cout << "Input a string or \"exit\":" << std::endl;
 		std::getline(std::cin, s);
+
+		if (s == "exit")
+		{
+			return;
+		}
+
+		if (!Parser::isAllASCII(s))
+		{
+			std::cout << "Non ACSII characters are. Please repeate input" << std::endl;
+
+			continue;
+		}
+
 		pub(m_mosq, s.c_str(), "/testTopicANC/in/");
-		//s.clear();
+		
 		sub(message_callback, receieveTopic);
 		subscribe = true;
-
+		
 		while (subscribe)
 		{
-			mosquitto_loop(m_mosq, 100, 1);
+			if (mosquitto_loop(m_mosq, -1, 1))
+			{
+				subscribe = false;
+				unSub(receieveTopic);
+				std::cout << "Connection lost" << std::endl;
+
+				return;
+			}
 		}
 	}
 }

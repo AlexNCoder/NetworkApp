@@ -4,5 +4,5 @@
 class Parser
 {
 public:
-	std::string parse(std::string s);
+	static bool isAllASCII(std::string s);
 };

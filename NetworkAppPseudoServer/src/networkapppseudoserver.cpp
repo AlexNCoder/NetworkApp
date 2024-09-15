@@ -54,6 +54,10 @@ Server::Server(std::string hostS, int port, int qos) :MosquittoConnect(hostS, po
 void Server::server_message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
 {
 	auto msgText = (char*)message->payload;
+	if (!msgText)
+	{
+		return;
+	}
 	
 	//std::cout << "From Server:	" << msgText << std::endl;
 	auto topic = Parser::makeOutTopic(message->topic);
