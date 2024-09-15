@@ -18,6 +18,7 @@ public:
 
 	static void pub(struct mosquitto* mosq, std::string message, std::string topic = "testTopicANC", int qos = 0);
 	void sub(void (*message_callback)(mosquitto* mosq, void* userdata, const mosquitto_message* message) = message_callback, std::string topic = "testTopicANC");
+	void unSub(std::string topic = "testTopicANC");
 
 	virtual void run() = 0;
 

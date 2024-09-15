@@ -47,17 +47,21 @@ public:
 	}
 };
 
+Server::Server(std::string hostS, int port, int qos) :MosquittoConnect(hostS, port, qos)
+{
+}
+
 void Server::server_message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
 {
 	auto msgText = (char*)message->payload;
 	
-	std::cout << "From Server:	" << msgText << std::endl;
+	//std::cout << "From Server:	" << msgText << std::endl;
 	auto topic = Parser::makeOutTopic(message->topic);
 
 	//std::string s = "17 water, 26.33 shugar, 13,76 milk and 1 egg";
 	//std::string s = "8 jhkfd8 1,2 e6.3fa5o   75e1";
 	auto nums = Parser::parseMessage(msgText);
-	//return;
+	
 	auto send = sumStr(nums);
 	pub(mosq, send.c_str(), topic);
 }

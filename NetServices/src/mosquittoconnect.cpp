@@ -39,7 +39,7 @@ void MosquittoConnect::pub(struct mosquitto* mosq, std::string message, std::str
 	const char* topicS = topic.c_str();
 	int payloadlen = message.length();
 	const void* payload = message.c_str();
-	bool retain = true;
+	bool retain = false;
 
 	// Отправка сообщения
 	auto res = mosquitto_publish(mosq, mid, topicS, payloadlen, payload, qos, retain);
@@ -53,4 +53,8 @@ void MosquittoConnect::sub(
 	//mosquitto_connect_callback_set(m_mosq, connect_callback);
 	mosquitto_message_callback_set(m_mosq, message_callback);
 	auto res = mosquitto_subscribe(m_mosq, NULL, topic.c_str(), 0);
+}
+void MosquittoConnect::unSub(std::string topic)
+{
+	mosquitto_unsubscribe(m_mosq, NULL, topic.c_str());
 }
