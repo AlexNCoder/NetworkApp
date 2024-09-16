@@ -3,6 +3,7 @@
 #include <mosquitto.h>
 #include <string>
 #include "parser.h"
+#include <time.h>
 
 bool Client::subscribe = true;
 
@@ -13,21 +14,28 @@ Client::Client(std::string hostS, int port, int qos):MosquittoConnect(hostS, por
 void Client::message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
 {
 	subscribe = false;
-	auto o = (char*)message->payload;
-	std::cout << o << std::endl;
+	auto msg = (char*)message->payload;
+
+	if (msg)
+	{
+		std::cout << msg << std::endl;
+	}
+	else
+	{
+		std::cout << "Empty message received" << std::endl;
+	}
 }
 
 void Client::run()
 {
 	//std::string s = "13.76 26.33 1 17";
-
 	std::string s;
-	std::string receieveTopic = "/testTopicANC/out/";
-
+	time_t startTime;
+	
 	// Отправка сообщения
 	while (1)
 	{
-		unSub(receieveTopic);
+		unSub(m_receieveTopic);
 		std::cout << "Input a string or \"exit\":" << std::endl;
 		std::getline(std::cin, s);
 
@@ -42,21 +50,36 @@ void Client::run()
 
 			continue;
 		}
+		
+		pub(m_mosq, s.c_str(), m_sendTopic);
+		sub(message_callback, m_receieveTopic);
+		subscribe = true;		
+		startTime = time(NULL);
 
-		pub(m_mosq, s.c_str(), "/testTopicANC/in/");
-		
-		sub(message_callback, receieveTopic);
-		subscribe = true;
-		
 		while (subscribe)
 		{
 			if (mosquitto_loop(m_mosq, -1, 1))
 			{
 				subscribe = false;
-				unSub(receieveTopic);
+				unSub(m_receieveTopic);
 				std::cout << "Connection lost" << std::endl;
 
 				return;
+			}
+
+			if (difftime(time(NULL), startTime) > 2)
+			{
+				std::cout << "Server doesn't answer.Try again? (any input - Yes, for exit input \"No\")" << std::endl;
+				std::getline(std::cin, s);
+
+				if (s == "No")
+				{
+					return;
+				}
+				else
+				{
+					startTime = time(NULL);
+				}
 			}
 		}
 	}

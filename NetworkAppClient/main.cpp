@@ -1,6 +1,7 @@
 #include <iostream>
 #include "src/NetworkAppClient.h"
 #include "src/parser.h"
+//#include <signal.h>
 
 int main()
 {
