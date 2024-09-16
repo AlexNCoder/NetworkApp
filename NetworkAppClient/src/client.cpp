@@ -62,16 +62,17 @@ void Client::run()
 
 			continue;
 		}
+
+        if (sub(message_callback, m_receieveTopic))
+        {
+            std::cout << "Error subscribing" << std::endl;
+
+            return;
+        }
 		
 		if (pub(m_mosq, s.c_str(), m_sendTopic))
 		{
 			std::cout << "Error publishing" << std::endl;
-
-			return;
-		}
-		if (sub(message_callback, m_receieveTopic))
-		{
-			std::cout << "Error subscribing" << std::endl;
 
 			return;
 		}
