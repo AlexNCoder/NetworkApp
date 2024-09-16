@@ -19,10 +19,17 @@ MosquittoConnect::~MosquittoConnect()
 void MosquittoConnect::initConnection(std::string hostS, int port, int qos)
 {
 	void* obj = nullptr;
-	mosquitto_lib_init();
+	if (mosquitto_lib_init())
+	{
+		return;
+	}
 	m_mosq = mosquitto_new(NULL, true, obj);
 	char* host = const_cast<char*>(hostS.c_str());
-	auto connRes = mosquitto_connect(m_mosq, host, port, 0);
+	
+	if (!m_mosq || mosquitto_connect(m_mosq, host, port, 0))
+	{
+		return;
+	}
 }
 
 void MosquittoConnect::message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
@@ -32,7 +39,7 @@ void MosquittoConnect::message_callback(mosquitto* mosq, void* userdata, const m
 		<< "message:	" << (char*)message->payload << std::endl;
 }
 
-void MosquittoConnect::pub(struct mosquitto* mosq, std::string message, std::string topic, int qos)
+int MosquittoConnect::pub(struct mosquitto* mosq, std::string message, std::string topic, int qos)
 {
 	// Подготовка сообщения
 	int* mid = new int;
@@ -42,19 +49,30 @@ void MosquittoConnect::pub(struct mosquitto* mosq, std::string message, std::str
 	bool retain = false;
 
 	// Отправка сообщения
-	auto res = mosquitto_publish(mosq, mid, topicS, payloadlen, payload, qos, retain);
+	return mosquitto_publish(mosq, mid, topicS, payloadlen, payload, qos, retain);
 }
 
-void MosquittoConnect::sub(
+int MosquittoConnect::sub(
 	void (*message_callback)(mosquitto* mosq, void* userdata,
 		const mosquitto_message* message),
 	std::string topic)
 {
 	//mosquitto_connect_callback_set(m_mosq, connect_callback);
 	mosquitto_message_callback_set(m_mosq, message_callback);
-	auto res = mosquitto_subscribe(m_mosq, NULL, topic.c_str(), 0);
+	
+	return mosquitto_subscribe(m_mosq, NULL, topic.c_str(), 0);
 }
-void MosquittoConnect::unSub(std::string topic)
+int MosquittoConnect::unSub(std::string topic)
 {
-	mosquitto_unsubscribe(m_mosq, NULL, topic.c_str());
+	return mosquitto_unsubscribe(m_mosq, NULL, topic.c_str());
+}
+
+void MosquittoConnect::setSendTopic(std::string sendTopic)
+{
+	m_sendTopic = sendTopic;
+}
+
+void MosquittoConnect::setReceieveTopic(std::string receieveTopic)
+{
+	m_receieveTopic = receieveTopic;
 }

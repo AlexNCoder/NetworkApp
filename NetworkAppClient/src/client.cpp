@@ -1,4 +1,4 @@
-﻿#include "networkappclient.h"
+﻿#include "client.h"
 #include <iostream>
 #include <mosquitto.h>
 #include <string>
@@ -35,9 +35,21 @@ void Client::run()
 	// Отправка сообщения
 	while (1)
 	{
-		unSub(m_receieveTopic);
+		if (unSub(m_receieveTopic))
+		{
+			std::cout << "Error unsubscrining" << std::endl;
+
+			return;
+		}
 		std::cout << "Input a string or \"exit\":" << std::endl;
 		std::getline(std::cin, s);
+
+		if (s.empty())
+		{
+			std::cout << "Empty string. Please repeate input" << std::endl;
+
+			continue;
+		}
 
 		if (s == "exit")
 		{
@@ -51,8 +63,18 @@ void Client::run()
 			continue;
 		}
 		
-		pub(m_mosq, s.c_str(), m_sendTopic);
-		sub(message_callback, m_receieveTopic);
+		if (pub(m_mosq, s.c_str(), m_sendTopic))
+		{
+			std::cout << "Error publishing" << std::endl;
+
+			return;
+		}
+		if (sub(message_callback, m_receieveTopic))
+		{
+			std::cout << "Error subscribing" << std::endl;
+
+			return;
+		}
 		subscribe = true;		
 		startTime = time(NULL);
 
@@ -61,7 +83,13 @@ void Client::run()
 			if (mosquitto_loop(m_mosq, -1, 1))
 			{
 				subscribe = false;
-				unSub(m_receieveTopic);
+				if (unSub(m_receieveTopic))
+				{
+					std::cout << "Error unsubscrining, connection lost" << std::endl;
+
+					return;
+				}
+
 				std::cout << "Connection lost" << std::endl;
 
 				return;

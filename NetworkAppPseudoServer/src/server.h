@@ -11,6 +11,10 @@ public:
 	static std::string sumStr(std::vector<std::string>& nums);
 	void run() override;
 
+	virtual void setSendTopic(std::string sendTopic) override;
+
+	static std::string serverSendTopic;
+
 private:
 	//MosquittoConnect m_mosquittoConnect;
 };

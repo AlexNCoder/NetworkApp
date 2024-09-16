@@ -1,32 +1,25 @@
-#include "src/networkapppseudoserver.h"
+#include "src/server.h"
 #include <iostream>
-#include "src/receiver.h"
-#include <mosquittoconnect.h>
 
-int main()
+int main(int argc, char* argv[])
 {
+	if (argc < 3)
+	{
+		std::cout << "usage:	NetworkAppServer	<sendtopic>/out/	<receievetopic>/in/" << std::endl;
+
+		return 0;
+	}
+
 	try
 	{
-		// Прием сообщения
-		//auto mosqInstance = MosquittoConnect();
-		//mosqInstance.sub();
-		Server().run();
-		// Выделение только чисел
-
-		// Сортировка чисел по возрастанию
-
-		// Вычисление суммы
-
-		// Формирование итоговой строки
-
-		// Отправка сообщения со строкой клиенту
-		//mosquitto_destroy(mosq);
-
-		Receiver().print();
+		auto server = Server();
+		server.setReceieveTopic(argv[1]);
+		server.setSendTopic(argv[2]);
+		server.run();
 	}
-	catch (const std::exception&)
+	catch (...)
 	{
-		std::cout << "Выход" << std::endl;
+		std::cout << "Error occured. Closing" << std::endl;
 	}
 
 	return 0;

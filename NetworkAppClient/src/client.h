@@ -10,8 +10,4 @@ public:
 
 	void run() override;
 	static bool subscribe;
-
-private:
-	std::string m_sendTopic = "/testTopicANC/in/"; 
-	std::string m_receieveTopic = "/testTopicANC/out/";
 };
