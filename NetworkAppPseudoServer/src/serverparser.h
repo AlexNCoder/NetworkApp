@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 
+/*!
+* \brief Функции для парсинга сообщений
+*/
 class ServerParser
 {
 public:
