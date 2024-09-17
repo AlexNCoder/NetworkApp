@@ -3,6 +3,8 @@
 #include "mosquittoconnect.h"
 #include "serverparser.h"
 #include <algorithm>
+#include <sstream>
+#include <ios>
 
 std::string Server::serverSendTopic = "/testTopicANC/out/";
 
@@ -67,16 +69,18 @@ std::string Server::sumStr(std::vector<std::string>& nums)
 
 	std::string res;
 
+    std::stringstream ss;
+
 	for (auto e : numsF)
 	{
-		res.append(std::to_string(e).c_str());
-		res.append(" ");
+        ss << e << " ";
 	}
-	res.erase(res.find_last_of(" "));
+    ss.seekp(-1, std::ios_base::end);
+//	res.erase(res.find_last_of(" "));
 	
-	res.append("\n");
-	res.append(std::to_string(sum).c_str());
-	std::cout << res << std::endl;
+    ss << "\n" << sum;
+    res = ss.str();
+    std::cout << res << std::endl;
 
 	return res;
 }
