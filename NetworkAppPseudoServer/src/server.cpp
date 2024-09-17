@@ -18,18 +18,13 @@ Server::Server(std::string hostS, int port, int qos) :MosquittoConnect(hostS, po
 void Server::server_message_callback(mosquitto* mosq, void* userdata, const mosquitto_message* message)
 {
 	auto msgText = (char*)message->payload;
+
 	if (!msgText)
 	{
 		std::cout << "An empty message receieved" << std::endl;
 
 		return;
 	}
-	
-	//std::cout << "From Server:	" << msgText << std::endl;
-	//auto topic = ServerParser::makeOutTopic(message->topic);
-
-	//std::string s = "17 water, 26.33 shugar, 13,76 milk and 1 egg";
-	//std::string s = "8 jhkfd8 1,2 e6.3fa5o   75e1";
 	auto nums = ServerParser::parseMessage(msgText);
 	
 	if (!nums.size())
@@ -38,8 +33,8 @@ void Server::server_message_callback(mosquitto* mosq, void* userdata, const mosq
 
 		return;
 	}
-
 	auto send = sumStr(nums);
+
 	if (serverSendTopic.empty())
 	{
 		std::cout << "Empty out topic" << std::endl;
@@ -66,9 +61,7 @@ std::string Server::sumStr(std::vector<std::string>& nums)
 		sum += f;
 	}
 	std::sort(numsF.begin(), numsF.end());
-
 	std::string res;
-
     std::stringstream ss;
 
 	for (auto e : numsF)

@@ -1,7 +1,5 @@
 #include "mosquittoconnect.h"
-
 #include <iostream>
-
 
 MosquittoConnect::MosquittoConnect(std::string hostS, int port, int qos)
 	:m_qos(qos)

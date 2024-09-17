@@ -1,5 +1,4 @@
 #include "serverparser.h"
-
 #include <regex>
 
 std::string ServerParser::makeOutTopic(std::string currentTopic)

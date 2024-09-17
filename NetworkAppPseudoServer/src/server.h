@@ -17,6 +17,11 @@ public:
 	*/
 	Server(std::string hostS = "localhost", int port = 1883, int qos = 0);
 	static void server_message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message);
+
+	/*!
+	* \brief Возвращает строку с отсортированными числами и их суммой
+	* \return Cтрокf с отсортированными числами и их суммой
+	*/
 	static std::string sumStr(std::vector<std::string>& nums);
 	void run() override;
 
