@@ -76,7 +76,6 @@ std::string Server::sumStr(std::vector<std::string>& nums)
         ss << e << " ";
 	}
     ss.seekp(-1, std::ios_base::end);
-//	res.erase(res.find_last_of(" "));
 	
     ss << "\n" << sum;
     res = ss.str();
