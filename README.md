@@ -5,26 +5,27 @@
 Для работы приложений-клиентов требуется установка [mosquitto](https://github.com/eclipse/mosquitto).
 
 ## Сборка проекта NetworkApp (Linux)
-1. Клонирование репозитория
-
-    ```git clone https://github.com/AlexNCoder/NetworkApp.git```
-
-2. Переход в директорию проекта
-
-    ```cd NetworkApp```
-
-3. Создание папки сборки
-
-    ```mkdir build```
-
-4. Переход в папку сборки
-
-    ```cd build```
-
-5. Запуск CMake
-
-    ```cmake ../```
-
-6. Сборка
-
-    ```make```
+Клонирование репозитория
+```
+git clone https://github.com/AlexNCoder/NetworkApp.git
+```
+Переход в директорию проекта
+```
+cd NetworkApp
+```
+Создание папки сборки
+```
+mkdir build
+```
+Переход в папку сборки
+```
+cd build
+```
+Запуск CMake
+```
+cmake ../
+```
+Сборка
+```
+make
+```
